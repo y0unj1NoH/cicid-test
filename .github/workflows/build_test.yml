@@ -51,16 +51,12 @@ jobs:
       - name: Build
         run: |
           yarn build 2>&1 | tee build.log
-          BUILD_EXIT_CODE=${PIPESTATUS[0]}
-          if [ $BUILD_EXIT_CODE -ne 0 ]; then
-              echo "스크립트 실행 실패, 종료 코드: $BUILD_EXIT_CODE"
-          else
-              echo "스크립트 실행 성공, 종료 코드: $BUILD_EXIT_CODE"
-          fi
+          echo "BUILD_EXIT_CODE=${PIPESTATUS[0]}" >> $GITHUB_ENV  # 환경 변수로 설정
+
         id: build
 
       - name: Comment PR
-        if: failure()
+        if: ${{ env.BUILD_EXIT_CODE != '0' }}
         uses: actions/github-script@v7
         with:
           script: |
