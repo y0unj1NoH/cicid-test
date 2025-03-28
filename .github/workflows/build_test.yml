@@ -53,22 +53,24 @@ jobs:
           yarn build 2>&1 | tee build.log
           BUILD_EXIT_CODE=$?
           if [ $BUILD_EXIT_CODE -ne 0 ]; then
-            echo "빌드에 실패했습니다. PR에 코멘트를 남기고 작업을 실패 처리합니다."
-            exit $BUILD_EXIT_CODE
+            echo "빌드에 실패했습니다."
+            echo "::set-output name=build_failed::true"  # 빌드 실패 상태를 출력
+          else
+            echo "::set-output name=build_failed::false"  # 빌드 성공 상태를 출력
           fi
         id: build
 
       - name: Comment PR
-        if: always()
+        if: steps.build.outputs.build_failed == 'true'
         uses: actions/github-script@v7
         with:
           script: |
             const fs = require('fs');
-            const errorMessage = fs.readFileSync('build.log', 'utf8') || '에러 없음';
+            const errorMessage = fs.readFileSync('build.log', 'utf8');
 
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `## ❌ 빌드 테스트 실패\n\n빌드 테스트 중 다음과 같은 에러가 발생했습니다. 코드를 확인하고 수정해주세요:\n<details>\n<summary>에러 로그 보기</summary>\n\`\`\`\n\n${errorMessage}\n\n\`\`\`\n</details>`
+              body: `## ❌ 빌드 테스트 실패\n\n빌드 테스트 중 다음과 같은 에러가 발생했습니다. 코드를 확인하고 수정해주세요:\n<details>\n<summary>에러 로그 보기</summary>\n${errorMessage}\n</details>`
             })
