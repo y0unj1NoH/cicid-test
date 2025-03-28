@@ -51,7 +51,7 @@ jobs:
       - name: Build
         run: |
           yarn build 2>&1 | tee build.log
-          BUILD_EXIT_CODE=$?
+          BUILD_EXIT_CODE=${PIPESTATUS[0]}
           if [ $BUILD_EXIT_CODE -ne 0 ]; then
               echo "스크립트 실행 실패, 종료 코드: $BUILD_EXIT_CODE"
           else
