@@ -70,5 +70,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `## ❌ 빌드 테스트 실패\n\n빌드 테스트 중 다음과 같은 에러가 발생했습니다. 코드를 확인하고 수정해주세요:\n<details>\n<summary>에러 로그 보기</summary>\n\`\`\`\n\n${errorMessage}\n\n\`\`\`\n</details>`
+              body: `## ❌ 빌드 테스트 실패\n\n빌드 테스트 중 다음과 같은 에러가 발생했습니다. 코드를 확인하고 수정해주세요:\n<details>\n<summary>에러 로그 보기</summary>\n${errorMessage}\n</details>`
             })
