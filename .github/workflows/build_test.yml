@@ -53,10 +53,9 @@ jobs:
           yarn build 2>&1 | tee build.log
           BUILD_EXIT_CODE=$?
           if [ $BUILD_EXIT_CODE -ne 0 ]; then
-            echo "빌드에 실패했습니다."
-            echo "::set-output name=build_failed::true"  # 빌드 실패 상태를 출력
+              echo "스크립트 실행 실패, 종료 코드: $BUILD_EXIT_CODE"
           else
-            echo "::set-output name=build_failed::false"  # 빌드 성공 상태를 출력
+              echo "스크립트 실행 성공, 종료 코드: $BUILD_EXIT_CODE"
           fi
         id: build
 
