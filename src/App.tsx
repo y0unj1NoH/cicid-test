@@ -4,7 +4,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 
 function App() {
-  const [counttttt, setCount] = useState(0)
+  const [count, ssetCount] = useState(0)
 
   return (
     <>
