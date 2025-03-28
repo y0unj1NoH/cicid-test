@@ -60,7 +60,7 @@ jobs:
         id: build
 
       - name: Comment PR
-        if: success()
+        if: failure()
         uses: actions/github-script@v7
         with:
           script: |
